@@ -1,0 +1,23 @@
+include config.jam ;
+
+if ! $(DEFINES)
+{
+    Exit "Please run ./configure first." ;
+}
+
+CCFLAGS = -g -Wall -W ;
+OPTIM   = -O3 ;
+RM      = rm -Rf ;
+
+rule OSXBundle
+{   
+    Depends     exe   : $(1) ; 
+    Depends     $(1)  : $(2) ;
+    Clean       clean : $(1) macosx/build ;
+    DoOSXBundle $(1) ;
+}
+actions DoOSXBundle
+{   
+    $(RM) $(1) && ( cd macosx && xcodebuild ) && \
+      mv macosx/build/Debug/Transmission.app $(1)
+}

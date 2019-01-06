@@ -1,0 +1,21 @@
+TODO list for Transmission <http://transmission.m0k.org/>
+
+Bugfixes
+--------
+
+Enhancements
+------------
+Rewrite slot selection and reordering to avoid useless read/write
+access (inout.c)
+Rewrite unchoking algorithm to prefer people we are downloading from
+In "end game" mode, send cancel messages when needed
+In "end game" mode, don't ask a peer the same block twice
+Try to respect the tracker announce interval
+Ask for the rarest pieces first
+Store resume files in the right place depending on the OS
+Correctly send 'completed' message to tracker
+OS X: more aquaish icon
+
+Features
+--------
+http://transmission.m0k.org/forum/viewtopic.php?p=2

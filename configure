@@ -1,0 +1,62 @@
+#! /bin/sh
+
+TR_VERSION="0.2"
+
+# Baaaah
+DEFINES="TR_VERSION=\\\\\\\"$TR_VERSION\\\\\\\""
+
+# For > 2 GB files
+DEFINES="$DEFINES _FILE_OFFSET_BITS=64 _LARGEFILE_SOURCE"
+
+# For asprintf
+DEFINES="$DEFINES _GNU_SOURCE"
+
+SYSTEM=`uname -s`
+case $SYSTEM in
+  BeOS)
+    DEFINES="$DEFINES SYS_BEOS"
+
+    RELEASE=`uname -r`
+    case $RELEASE in
+      6.0)   # Zeta
+        DEFINES="$DEFINES HAVE_OPENSSL"
+        LINKLIBS="$LINKLIBS -lbind -lsocket -lcrypto"
+        ;;
+      5.0.4) # R5 / BONE beta 7
+        LINKLIBS="$LINKLIBS -lbind -lsocket"
+        ;;
+      5.0*)  # R5 / net_server
+        DEFINES="$DEFINES BEOS_NETSERVER"
+        LINKLIBS="$LINKLIBS -lnet"
+        ;;
+      *)
+        echo "Unsupported BeOS version"
+        exit 1 ;;
+    esac
+    ;;
+
+  Darwin)
+    DEFINES="$DEFINES SYS_DARWIN HAVE_OPENSSL"
+    LINKLIBS="$LINKLIBS -lpthread -lcrypto"
+    ;;
+
+  Linux)
+    DEFINES="$DEFINES SYS_LINUX"
+    LINKLIBS="$LINKLIBS -lpthread"
+    ;;
+
+  NetBSD)
+    DEFINES="$DEFINES SYS_NETBSD"
+    LINKLIBS="$LINKLIBS -lpthread"
+    ;;
+
+  *)
+    echo "Unsupported operating system"
+    exit 1 ;;
+esac
+
+rm -f config.jam
+cat << EOF > config.jam
+DEFINES  = $DEFINES ;
+LINKLIBS = $LINKLIBS ;
+EOF

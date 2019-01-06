@@ -1,0 +1,36 @@
+SubDir TOP ;
+
+Main          transmissioncli   : transmissioncli.c ;
+LinkLibraries transmissioncli   : libtransmission.a ;
+ObjectHdrs    transmissioncli.c : $(TOP)/libtransmission ;
+
+if $(OS) = MACOSX
+{
+    OSXBundle Transmission.app : libtransmission.a
+        macosx/Controller.h
+        macosx/Controller.m
+        macosx/English.lproj/InfoPlist.strings
+        macosx/English.lproj/MainMenu.nib
+        macosx/English.lproj/MainMenu.nib/classes.nib
+        macosx/English.lproj/MainMenu.nib/info.nib
+        macosx/English.lproj/MainMenu.nib/keyedobjects.nib
+        macosx/Images/Info.tiff
+        macosx/Images/Open.tiff
+        macosx/Images/Progress.tiff
+        macosx/Images/Remove.tiff
+        macosx/Images/Resume.tiff
+        macosx/Images/Stop.tiff
+        macosx/Info.plist
+        macosx/NameCell.h
+        macosx/NameCell.m
+        macosx/PrefsController.h
+        macosx/PrefsController.m
+        macosx/ProgressCell.h
+        macosx/ProgressCell.m
+        macosx/main.m
+        macosx/Transmission.icns
+        macosx/Transmission.xcodeproj/project.pbxproj
+        macosx/Transmission_Prefix.pch ;
+}
+
+SubInclude TOP libtransmission ;
